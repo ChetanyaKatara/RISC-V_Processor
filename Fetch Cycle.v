@@ -10,21 +10,21 @@ module Fetch_cycle(clk,rst,PC_Exmux,PCT_Ex,PC_D,PC_1D,IR_out_D);
   reg [31:0] IR_reg,PC_1D_reg,PC_F_reg;
   
   MUX2 PC_mx(.b(PCT_Ex),
-              .a(PC_adder),
+             .a(PC_adder),      //PC_Mux to select new Program Counter
               .c(PC_mux),
               .sel(PC_Exmux));
   
   Program_counter PC(.clk(clk),
-                     .rst(rst),
+                     .rst(rst),       //PC Loaded for passing it to instruction memory
                      .PC(PC_F),
                      .PCnxt(PC_mux));
   
   Adder PC_add(.a(PC_F),
-                 .b(32'h00000001),
-                 .c(PC_adder));
+               .b(32'h00000001),       //PC + 1
+               .c(PC_adder));
   
   Instr_mem Instruction_memory(.rst(rst),
-                               .Addr(PC_F),
+                               .Addr(PC_F),         //Instructions are stored here
                                .IRout(InstrF));
   
   always @(posedge clk or negedge rst)
@@ -83,4 +83,21 @@ module MUX3(a,b,c,sel,out);
   input [31:0]a,b,c;
   input [1:0]sel;
   output [31:0]out;
+  
+assign out[31:0] = (sel[1:0] == 2'b00) ? a[31:0] : (sel[1:0] == 2'b01) ? b[31:0] : (sel[1:0] == 2'b10) ? c[31:0] : 32'h00000000;
+endmodule
 
+module Instr_mem(Addr,IRout,rst);
+  input rst;
+  input [31:0]Addr;
+  output [31:0]IRout;
+  
+  reg [31:0] ir_memory[1023:0];
+  
+  assign IRout[31:0] = (rst == 1'b0) ? {32{1'b0}} : ir_memory[Addr[31:0]];
+  
+   initial 
+     begin
+       $readmemh("memfile.hex",ir_memory);
+     end
+endmodule
