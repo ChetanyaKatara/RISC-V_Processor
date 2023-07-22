@@ -11,7 +11,7 @@ module execute_cycle(,clk,rst,regwrt_E,oprsel_E,immdx_E,memwrite_E,resultctrl_E,
 
   
   wire [31:0]Src_A,Src_B,Src_interim;
-  wire [31:0]ResultE,Resultf;
+  wire [31:0]ResultE;
   wire ZeroE,PC_1Exmux;
   wire wr3;
   
@@ -21,45 +21,43 @@ module execute_cycle(,clk,rst,regwrt_E,oprsel_E,immdx_E,memwrite_E,resultctrl_E,
 
 
   brd brd(.inp(PC_1Exmux),
-  .clk(clk),
-  .rst(rst),
-  .opt(wr3),
-  .opt1(PC_Exmux));
+          .clk(clk), 
+          .rst(rst),      //This module detects a successful branch statement and wr3 is enabled for exactly 3 clock cycles so that
+          .opt(wr3),      //next two instructions along with the current statement yeilds no output and control signals are also set to 0.
+          .opt1(PC_Exmux)); 
   
   MUX3 srcA(.a(RD1_E),
             .b(ResultW),
-            .c(ALUresult_M),
+            .c(ALUresult_M),   //Three input MUX
             .sel(FrwdA_E),
             .out(Src_A));
   
   
   MUX3 srcB(.a(RD2_E),
             .b(ResultW),
-            .c(ALUresult_M),
+            .c(ALUresult_M),     //Three input MUX
             .sel(FrwdB_E),
             .out(Src_interim));
   
   MUX2 ALUsr(.a(Src_interim),
              .b(immdx_E),
-             .sel(oprsel_E),
+             .sel(oprsel_E),     //Two input MUX
             .c(Src_B));
   
   ALU ALunit(.A(Src_A),
              .B(Src_B),
              .Result(ResultE),
-             .ALUcontrol(ALUcontrol_E),
+             .ALUcontrol(ALUcontrol_E),    //ALU
              .zero(ZeroE),
              .carry(),
              .negative());
   
   Adder PC_clc(.a(PC_DE),
-               .b(immdx_E),
+               .b(immdx_E),      //PC + IMMEDIATE value for branch instructions
                .c(PCT_Ex));
 
 
-  ot ott(.in1(ResultE),
-        .in2(wr3),
-        .out(Resultf));
+  
 
 
   
@@ -76,13 +74,13 @@ module execute_cycle(,clk,rst,regwrt_E,oprsel_E,immdx_E,memwrite_E,resultctrl_E,
           end
         else 
           begin
-            regwrt_Er <= regwrt_E; 
-            memwrite_Er <= memwrite_E; 
+            regwrt_Er <= (~wr3) & regwrt_E; 
+            memwrite_Er <= (~wr3) & memwrite_E; 
             resultctrl_Er <= resultctrl_E;
             RD_Er <= RD_E;
             PC_1DEr <= PC_1DE; 
             Src_R <= Src_interim; 
-            Result_Er <= Resultf;
+            Result_Er <= (~wr3) & ResultE;
           end
     end
     
