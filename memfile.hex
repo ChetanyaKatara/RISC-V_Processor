@@ -1,9 +1,9 @@
 @00000000
 00600193 //Adds 0 and 6 stores them to reg3
 00800213 //Adds 0 and 8 stores them to reg4
-00420363 //BRANCH 
-00318763 //Branch reg3
-00318363 //
+00420363 //BRANCH if reg4 == reg4
+00318763 //Branch reg3                //these are three consecutive branch statements in order to test the proper functionality of one single successful branch statement.
+00318363 //Branch if reg3 == reg4
 004182B3 //Adds reg3 and reg4 stores them to reg5
 403204B3 //Subtracts reg4 and reg3 stores to reg9
 003263B3 //Bitwise OR of reg4 and reg3 stores to reg7
