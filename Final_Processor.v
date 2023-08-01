@@ -517,14 +517,7 @@ endmodule
   
 endmodule
 
-module ot(in1,in2,out);
- input [31:0]in1;
- input in2;
- output [31:0]out;
 
- assign out[31:0] = (in2) ? 32'h00000000:in1[31:0];
-
- endmodule
 
 module brd(inp,opt,clk,rst,opt1);
 input inp,rst,clk;
