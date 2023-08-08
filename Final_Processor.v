@@ -477,13 +477,13 @@ endmodule
           end
         else 
           begin
-            regwrt_Er <= (~wr3) & regwrt_E; 
-            memwrite_Er <= (~wr3) & memwrite_E; 
+            regwrt_Er <= (wr3) ? 0 : regwrt_E; 
+            memwrite_Er <= (wr3) ? 0 : memwrite_E; 
             resultctrl_Er <= resultctrl_E;
             RD_Er <= RD_E;
             PC_1DEr <= PC_1DE; 
             Src_R <= Src_interim; 
-            Result_Er <= (~wr3) & ResultE;
+            Result_Er <= (wr3) ? 32'h0 : ResultE;
           end
     end
     
