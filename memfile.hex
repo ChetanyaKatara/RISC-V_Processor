@@ -1,0 +1,24 @@
+@00000000
+00800193 //Adds 0 and 8 stores them to reg3
+00800213 //Adds 0 and 8 stores them to reg4
+00320363 //Branch if reg3 == reg4
+004182B3 //Adds reg3 and reg4 stores them to reg5
+403204B3 //Subtracts reg4 and reg3 stores to reg9
+003263B3 //Bitwise OR of reg4 and reg3 stores to reg7
+0041F513 //Immediate AND of decimal value 4 and reg3 stored in reg10
+00F54113 //Immediate XOR of decimal value 15 and reg10 stored in reg2
+003263B3 //Bitwise OR of reg4 and reg3 stores to reg7
+003020A3 //Store the data of reg3 to mem[1+reg0]
+00102803 //Load the data from mem[reg0+1] to reg16
+0011F513 //These all are just arithmetic instructions to validate branch instruction.
+0021F513
+0031F513
+0051F513
+0061F513
+0071F513
+0081F513
+0091F513
+00A1F513
+00B1F513
+00C1F513
+00D1F513
