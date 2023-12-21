@@ -401,7 +401,7 @@ module extender(Input,immdc,immdx);
 endmodule
       
 
- module execute_cycle(,clk,rst,regwrt_E,oprsel_E,immdx_E,memwrite_E,resultctrl_E,branch_E,ALUcontrol_E,RD1_E,RD2_E,RD_E,PC_DE,PC_1DE,PC_Exmux,PCT_Ex,FrwdA_E,FrwdB_E,regwrt_M,memwrite_M,resultctrl_M,RD_M,PC_1DEM,writedata_M,ALUresult_M,ResultW);
+ module execute_cycle(clk,rst,regwrt_E,oprsel_E,immdx_E,memwrite_E,resultctrl_E,branch_E,ALUcontrol_E,RD1_E,RD2_E,RD_E,PC_DE,PC_1DE,PC_Exmux,PCT_Ex,FrwdA_E,FrwdB_E,regwrt_M,memwrite_M,resultctrl_M,RD_M,PC_1DEM,writedata_M,ALUresult_M,ResultW);
   
   input regwrt_E,oprsel_E,memwrite_E,resultctrl_E,branch_E,clk,rst;
   input [3:0]ALUcontrol_E;
